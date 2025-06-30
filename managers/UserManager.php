@@ -3,9 +3,43 @@
  * @author : Gaellan
  * @link : https://github.com/Gaellan
  */
-
+ 
+require '../models/User.php';
+require 'AbstractManager.php';
 
 class UserManager extends AbstractManager
 {
-
+    public function __construct()
+    {
+        parent::__construct();
+        
+    }
+    
+    public function findByEmail(string $email): ?User
+    {
+        $query =  $this->db->prepare('SELECT * FROM categories WHERE id = :id');
+        $query->execute([':id' => $id]);
+        $item = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if($item)
+        {
+            $user = new User($userData['username'], $userData['email'], $userData['password'], $userData['role'], new DateTime($userData['created_at']));
+        }
+        
+        return null;
+    }
+    
+    public function create(User $user): void
+    {
+        $query = $this->db->prepare('INSERT INTO users (username, email, password, role, created_at) VALUES (:username, :email, :password, :role, :created_at)');
+        $query->execute([
+            ':username' => $user->getUsername(),
+            ':email' => $user->getEmail(),
+            ':password' => $user->getPassword(),
+            ':role' => $user->getRole(),
+            ':createdAt' => $user->getCreatedAt()->format('Y-m-d H:i:s')
+        ]);
+        $user->setId($this->db->lastInsertId());
+        
+    }
 }
