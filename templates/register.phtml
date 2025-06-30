@@ -4,7 +4,7 @@
     <h2 class="mt-5">Register</h2>
 
     <form action="index.php?route=check-register" method="post">
-        <input type="hidden" name="csrf-token" id="csrf-token" value="<?= $data['csrf_token'] ?>" />
+        <input type="hidden" name="csrf-token" id="csrf-token" value="<?= $csrf_token ?>" />
         <fieldset class="my-1">
             <label for="username" class="form-label">
                 Username

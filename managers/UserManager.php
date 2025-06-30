@@ -17,8 +17,8 @@ class UserManager extends AbstractManager
     
     public function findByEmail(string $email): ?User
     {
-        $query =  $this->db->prepare('SELECT * FROM categories WHERE id = :id');
-        $query->execute([':id' => $id]);
+        $query =  $this->db->prepare('SELECT * FROM users WHERE email = :email');
+        $query->execute([':email' => $email]);
         $item = $query->fetch(PDO::FETCH_ASSOC);
         
         if($item)
@@ -41,5 +41,20 @@ class UserManager extends AbstractManager
         ]);
         $user->setId($this->db->lastInsertId());
         
+    }
+    
+    public function findById(int $id): ?User
+    {
+        $query =  $this->db->prepare('SELECT * FROM users WHERE id = :id');
+        $query->execute([':id' => $id]);
+        $userData = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if($userData)
+        {
+            $user = new User($userData['username'], $userData['email'], $userData['password'], $userData['role'], new DateTime($userData['created_at']));
+            $user->setId($userData['id']);
+            return $user;
+        }
+        return null;
     }
 }

@@ -13,7 +13,6 @@ class Category
     {
         $this->setTitle($title);
         $this->setDescription($description);
-        $this->setId($id);
     }
     
     public function getId(): ?int

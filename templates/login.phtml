@@ -4,7 +4,7 @@
     <h2 class="mt-5">Login</h2>
 
     <form action="index.php?route=check-login" method="post">
-        <input type="hidden" name="csrf-token" id="csrf-token" value="<?= $data['csrf_token'] ?>" />
+        <input type="hidden" name="csrf-token" id="csrf-token" value="<?= $csrf_token ?>" />
         <fieldset class="my-1">
             <label for="email" class="form-label">
                 Email
