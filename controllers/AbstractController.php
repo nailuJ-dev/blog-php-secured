@@ -9,6 +9,7 @@ abstract class AbstractController
 {
     protected function render(string $template, array $data) : void
     {
+        extract($data); // pas utiliser ça sur des $ get ou des files
         require "templates/layout.phtml";
     }
 

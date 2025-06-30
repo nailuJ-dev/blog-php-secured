@@ -75,6 +75,6 @@ class User
 
     public function setCreatedAt(DateTime $createdAt): void
     {
-        $this->created_at = $createdAt;
+        $this->createdAt = $createdAt;
     }
 }

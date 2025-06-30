@@ -3,7 +3,7 @@
     
     <article class="mb-5">
         <h2><?= $post->getTitle(); ?></h2>
-        <p><?= $post->getContent(); ?></p>
+        <?= $post->getContent(); ?>
     </article>
     
     <section>
@@ -14,6 +14,18 @@
                 <p><?= $comment->getContent() ?></p>
             </div>
         <?php endforeach; ?>
+        
+        <?php if(isset($_SESSION['user_id'])): ?>
+            <form action="index.php?route=check-comment" method="post" class="mt-4">
+                <input type="hidden" name="csrf-token" value="<?= $csrf_token ?>" />
+                <input type="hidden" name="post_id" value="<?= $post->getId() ?>" />
+                <fieldset class="mb-3">
+                    <label for="content" class="form-label">Votre commentaire :</label>
+                    <textarea name="content" id="content" class="form-control" rows="4" required></textarea>
+                </fieldset>
+                <button type="submit" class="btn btn-primary">Publier</button>
+            </form>
+        <?php endif; ?>
         
     </section>
 </main>

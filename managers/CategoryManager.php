@@ -1,8 +1,5 @@
 <?php
 
-require '../models/Category.php';
-require 'AbstractManager.php';
-
 class CategoryManager extends AbstractManager
 {
     public function __construct()
@@ -33,7 +30,9 @@ class CategoryManager extends AbstractManager
         
         if ($item)
         {
-            return new Category($item['id'], $item['title'], $item['description']);
+            $category = new Category($item['title'], $item['description']);
+            $category->setId($item['id']);
+            return $category;
         }
         return null;
     }

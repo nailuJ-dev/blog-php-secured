@@ -94,6 +94,9 @@ class BlogController extends AbstractController
         $userManager = new UserManager();
         $user = $userManager->findById($_SESSION['user_id']);
         
+        $postManager = new PostManager();
+        $post = $postManager->findOne($postId);
+        
         $comment = new Comment($content, $user, $post);
         $commentManager = new CommentManager();
         $commentManager->create($comment);

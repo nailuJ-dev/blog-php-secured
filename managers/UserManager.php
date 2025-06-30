@@ -3,9 +3,6 @@
  * @author : Gaellan
  * @link : https://github.com/Gaellan
  */
- 
-require '../models/User.php';
-require 'AbstractManager.php';
 
 class UserManager extends AbstractManager
 {
@@ -24,6 +21,8 @@ class UserManager extends AbstractManager
         if($item)
         {
             $user = new User($item['username'], $item['email'], $item['password'], $item['role'], new DateTime($item['created_at']));
+            $user->setId($item['id']);
+            return $user;
         }
         
         return null;

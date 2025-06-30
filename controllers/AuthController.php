@@ -4,12 +4,11 @@
  * @link : https://github.com/Gaellan
  */
 
-
 class AuthController extends AbstractController
 {
     public function login() : void
     {
-        $crsfToken = bin2hex(random_bytes(32));
+        $csrfToken = bin2hex(random_bytes(32));
         $_SESSION['csrf_token'] = $csrfToken;
         
         $this->render("login", ['csrf_token' => $csrfToken]);
@@ -47,7 +46,7 @@ class AuthController extends AbstractController
 
     public function register() : void
     {
-        $crsfToken = bin2hex(random_bytes(32));
+        $csrfToken = bin2hex(random_bytes(32));
         $_SESSION['csrf_token'] = $csrfToken;
         
         $this->render("register", ['csrf_token' => $csrfToken]);

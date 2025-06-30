@@ -41,7 +41,7 @@ class Post
     
     public function getCreatedAt(): DateTime 
     { 
-        return $this->created_at;
+        return $this->createdAt;
     }
     
     public function getAuthor(): User 
@@ -76,7 +76,7 @@ class Post
     
     public function setCreatedAt(DateTime $createdAt): void
     { 
-        $this->created_at = $createdAt;
+        $this->createdAt = $createdAt;
     }
     
     public function setAuthor(User $author): void 

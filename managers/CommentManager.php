@@ -3,8 +3,6 @@
  * @author : Gaellan
  * @link : https://github.com/Gaellan
  */
-require '../models/Comment.php';
-require 'AbstractManager.php';
 
 class CommentManager extends AbstractManager
 {
@@ -14,16 +12,16 @@ class CommentManager extends AbstractManager
         $postObject = $postManager->findOne($postId);
 
         $query = $this->db->prepare(
-            'SELECT comments.*, users.username, users.email, users.role, users.created_at 
+            'SELECT comments.*, users.username, users.email, users.password, users.role, users.created_at, users.id as user_id 
              FROM comments JOIN users ON comments.user_id = users.id WHERE comments.post_id = :postId'
         );
-        $query->bindParam(':postId', $postId, PDO::PARAM_INT);
-        $query->execute();
+        $query->execute([':postId' => $postId]);
         $results = $query->fetchAll(PDO::FETCH_ASSOC);
 
         $comments = [];
         foreach ($results as $item) {
-            $user = new User($item['username'], $item['email'], $item['role'], $item['user_created_at'], $item['user_id']);
+            $user = new User($item['username'], $item['email'], $item['password'], $item['role'], new DateTime($item['created_at']));
+            $user->setId($item['user_id']);
             $comments[] = new Comment($item['content'], $user, $postObject, $item['id']);
         }
         return $comments;

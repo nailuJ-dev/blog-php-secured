@@ -3,8 +3,6 @@
  * @author : Gaellan
  * @link : https://github.com/Gaellan
  */
-require '../models/Post.php';
-require 'AbstractManager.php';
 
 class PostManager extends AbstractManager
 {
@@ -16,15 +14,22 @@ class PostManager extends AbstractManager
     
     private function hydratePost(array $item): Post
     {
-        $author = new User($item['username'], $item['email'], $item['role'], $item['created_at'], $item['author']);
+        $author = new User($item['username'], $item['email'], $item['password'], $item['role'], new DateTime($item['created_at']));
+        $author->setId($item['author']);
+        
         $categories = $this->findCategoriesForPost($item['id']);
-        return new Post($item['title'], $item['excerpt'], $item['content'], $item['created_at'], $item['id'], $categories, $author);
+        
+        $post = new Post($item['title'], $item['excerpt'], $item['content'], new DateTime($item['created_at']), $author);
+        $post->setId($item['id']);
+        $post->setCategories($categories);
+    
+        return $post;
     }
     
     public function findLatest(): array
     {
         $query = $this->db->prepare(
-            'SELECT posts.*, users.username, users.email, users.role, users.created_at FROM posts 
+            'SELECT posts.*, users.username, users.email, users.password, users.role, users.created_at FROM posts 
              JOIN users ON posts.author = users.id ORDER BY posts.created_at DESC LIMIT 4'
         );
         $query->execute();
@@ -40,7 +45,7 @@ class PostManager extends AbstractManager
     public function findOne(int $id): ?Post
     {
         $query = $this->db->prepare(
-            'SELECT posts.*, users.username, users.email, users.role, users.created_at FROM posts 
+            'SELECT posts.*, users.username, users.email, users.password, users.role, users.created_at FROM posts 
              JOIN users ON posts.author = users.id WHERE posts.id = :id'
         );
         $query->execute([':id' => $id]);
@@ -55,7 +60,7 @@ class PostManager extends AbstractManager
     public function findByCategory(int $categoryId): array
     {
         $query = $this->db->prepare(
-            'SELECT posts.*, users.username, users.email, users.role, users.created_at FROM posts 
+            'SELECT posts.*, users.username, users.email, users.password, users.role, users.created_at FROM posts 
              JOIN users ON posts.author = users.id
              JOIN posts_categories ON posts.id = posts_categories.post_id
              WHERE posts_categories.category_id = :categoryId ORDER BY posts.created_at DESC'
@@ -81,7 +86,9 @@ class PostManager extends AbstractManager
         
         $categories = [];
         foreach ($results as $item) {
-            $categories[] = new Category($item['title'], $item['description'], $item['id']);
+            $category = new Category($item['title'], $item['description']);
+            $category->setId($item['id']);
+            $categories[] = $category;
         }
         return $categories;
     }
