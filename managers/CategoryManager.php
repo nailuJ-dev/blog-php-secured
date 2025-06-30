@@ -20,7 +20,7 @@ class CategoryManager extends AbstractManager
         $categories = [];
         foreach ($results as $item)
         {
-            $category[] = new Category($item['id'], $item['title'], $item['description']);
+            $categories[] = new Category($item['id'], $item['title'], $item['description']);
         }
         return $categories;
     }
@@ -29,7 +29,7 @@ class CategoryManager extends AbstractManager
     {
         $query =  $this->db->prepare('SELECT * FROM categories WHERE id = :id');
         $query->execute([':id' => $id]);
-        $item = $query->fetchAll(PDO::FETCH_ASSOC);
+        $item = $query->fetch(PDO::FETCH_ASSOC);
         
         if ($item)
         {

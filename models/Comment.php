@@ -12,7 +12,6 @@ class Comment
     
     public function __construct(private string $content, private User $user, private Post $post)
     {
-        $this->setId($id);
         $this->setContent($content);
         $this->setUser($user);
         $this->setPost($post);

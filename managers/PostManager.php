@@ -17,7 +17,7 @@ class PostManager extends AbstractManager
     private function hydratePost(array $item): Post
     {
         $author = new User($item['username'], $item['email'], $item['role'], $item['created_at'], $item['author']);
-        $categories = $this->findByCategoriesForPost($item['id']);
+        $categories = $this->findCategoriesForPost($item['id']);
         return new Post($item['title'], $item['excerpt'], $item['content'], $item['created_at'], $item['id'], $categories, $author);
     }
     

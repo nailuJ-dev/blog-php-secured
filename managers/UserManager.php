@@ -23,7 +23,7 @@ class UserManager extends AbstractManager
         
         if($item)
         {
-            $user = new User($userData['username'], $userData['email'], $userData['password'], $userData['role'], new DateTime($userData['created_at']));
+            $user = new User($item['username'], $item['email'], $item['password'], $item['role'], new DateTime($item['created_at']));
         }
         
         return null;
@@ -37,7 +37,7 @@ class UserManager extends AbstractManager
             ':email' => $user->getEmail(),
             ':password' => $user->getPassword(),
             ':role' => $user->getRole(),
-            ':createdAt' => $user->getCreatedAt()->format('Y-m-d H:i:s')
+            ':created_at' => $user->getCreatedAt()->format('Y-m-d H:i:s')
         ]);
         $user->setId($this->db->lastInsertId());
         

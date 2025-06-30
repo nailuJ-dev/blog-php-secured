@@ -12,12 +12,10 @@ class Post
     
     public function __construct(private string $title, private string $excerpt, private string $content, private DateTime $createdAt, private User $author)
     {
-        $this->setId($id);
         $this->setTitle($title);
         $this->setExcerpt($excerpt);
         $this->setContent($content);
         $this->setAuthor($author);
-        $this->setCategories($categories);
         $this->setCreatedAt($createdAt);
     }
     

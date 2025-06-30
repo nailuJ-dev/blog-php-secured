@@ -46,7 +46,7 @@ class BlogController extends AbstractController
 
     public function post(string $postId) : void
     {
-        $postManager = new Postmanager();
+        $postManager = new PostManager();
         $post = $postManager->findOne((int)$postId);
         
         if ($post)
@@ -91,12 +91,12 @@ class BlogController extends AbstractController
         $postId = (int)$_POST['post_id'];
         $content = $_POST['content'];
         
-        $userManager = new userManager();
-        $user = $usermanager->findById($postId);
+        $userManager = new UserManager();
+        $user = $userManager->findById($_SESSION['user_id']);
         
         $comment = new Comment($content, $user, $post);
         $commentManager = new CommentManager();
-        $CommentManager->create($comment);
+        $commentManager->create($comment);
         
         $this->redirect("index.php?route=post&post_id={$_POST["post_id"]}");
     }

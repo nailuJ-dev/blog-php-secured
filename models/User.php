@@ -11,7 +11,6 @@ class User
     
     public function __construct(private string $username, private string $email, private string $password, private string $role, private DateTime $createdAt)
     {
-        $this->setId($id);
         $this->setUsername($username);
         $this->setEmail($email);
         $this->setPassword($password);
