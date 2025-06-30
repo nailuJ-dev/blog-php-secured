@@ -56,7 +56,7 @@ class PostManager extends AbstractManager
     {
         $query = $this->db->prepare(
             'SELECT posts.*, users.username, users.email, users.role, users.created_at FROM posts 
-             JOIN users ON posts.author = u.id
+             JOIN users ON posts.author = users.id
              JOIN posts_categories ON posts.id = posts_categories.post_id
              WHERE posts_categories.category_id = :categoryId ORDER BY posts.created_at DESC'
         );

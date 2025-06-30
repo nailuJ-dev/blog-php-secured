@@ -1,0 +1,19 @@
+<main id='post' class='py-5 px-3'>
+    <h1 class='mb-5'>Exercice blog sécurisé</h1>
+    
+    <article class="mb-5">
+        <h2><?= $data['post']->getTitle(); ?></h2>
+        <p><?= $data['post']->getContent(); ?></p>
+    </article>
+    
+    <section>
+        <h3>Commentaires</h3>
+        <?php foreach($data['comments'] as $comment): ?>
+            <div class='mb-3'>
+                <strong><?= $comment->getUser()->getUsername() ?></strong>
+                <p><?= $comment->getContent() ?></p>
+            </div>
+        <?php endforeach; ?>
+        
+    </section>
+</main>

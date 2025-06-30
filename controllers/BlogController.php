@@ -46,16 +46,58 @@ class BlogController extends AbstractController
 
     public function post(string $postId) : void
     {
+        $postManager = new Postmanager();
+        $post = $postManager->findOne((int)$postId);
         
-        // si le post existe
-        $this->render("post", []);
-
-        // sinon
-        $this->redirect("index.php");
+        if ($post)
+        {
+            $commentManager = new CommentManager();
+            $comments = $commentManager->findByPost((int)$postId);
+            
+            $csrfToken = bin2hex(random_bytes(32));
+            $_SESSION['csrf_token'] = $csrfToken;
+            
+            $post->setTitle(htmlspecialchars($post->getTitle(), ENT_QUOTES, 'UTF-8'));
+            $post->setContent(htmlspecialchars($post->getContent(), ENT_QUOTES, 'UTF-8'));
+            
+            foreach ($comments as $comment)
+            {
+                $comment->setContent(htmlspecialchars($comment->getContent(), ENT_QUOTES, 'UTF-8'));
+            }
+            
+            $this->render("post", [
+                'post' => $post,
+                'comments' => $comments,
+                'csrf_token' => $csrfToken
+            ]);
+        } else
+        {
+            $this->redirect("index.php");
+        }
     }
 
     public function checkComment() : void
     {
+        if ($_POST['csrf-token'] != $_SESSION['csrf_token']) {
+            $this->redirect("index.php?route=post&post_id={$_POST["post_id"]}");
+            return;
+        }
+        
+        if (!isset($_SESSION['user_id'])) {
+            $this->redirect("index.php?route=login");
+            return;
+        }
+        
+        $postId = (int)$_POST['post_id'];
+        $content = $_POST['content'];
+        
+        $userManager = new userManager();
+        $user = $usermanager->findById($postId);
+        
+        $comment = new Comment($content, $user, $post);
+        $commentManager = new CommentManager();
+        $CommentManager->create($comment);
+        
         $this->redirect("index.php?route=post&post_id={$_POST["post_id"]}");
     }
 }
