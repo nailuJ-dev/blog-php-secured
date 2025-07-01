@@ -35,6 +35,6 @@ class CommentManager extends AbstractManager
             ':user_id' => $comment->getUser()->getId(),
             ':post_id' => $comment->getPost()->getId(),    
         ]);
-        $comment->setId($this->db->lastInsertId());
+        $comment->setId((int)$this->db->lastInsertId());
     }
 }

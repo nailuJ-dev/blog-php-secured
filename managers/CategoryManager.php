@@ -17,7 +17,10 @@ class CategoryManager extends AbstractManager
         $categories = [];
         foreach ($results as $item)
         {
-            $categories[] = new Category($item['id'], $item['title'], $item['description']);
+            $category = new Category($item['title'], $item['description']);
+            $category->setId($item['id']);
+            $categories[] = $category;
+            
         }
         return $categories;
     }

@@ -36,7 +36,7 @@ class AuthController extends AbstractController
         if ($user && password_verify($password, $user->getPassword()))
         {
             $_SESSION['user_id'] = $user->getId();
-            $_SESSION['username'] = htmlspecialchars($user->getUsername(), ENT_QUOTES, 'UTF-8');
+            $_SESSION['username'] = $user->getUsername();
             $this->redirect('index.php');
         } else
         {
@@ -66,7 +66,7 @@ class AuthController extends AbstractController
             return;
         }
         
-        $username = htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8');
+        $username = $_POST['username'];
         $email = $_POST['email'];
         $password = $_POST['password'];
         $confirmPassword = $_POST['confirm-password'];
@@ -82,8 +82,15 @@ class AuthController extends AbstractController
             return;
         }
         
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         $userManager = new UserManager();
+        $existingUser = $userManager->findByEmail($email);
+        
+        if ($existingUser) {
+            $this->redirect("index.php?route=register");
+            return;
+        }
+        
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         $user = new User($username, $email, $hashedPassword, 'USER', new DateTime());
         $userManager->create($user);
         

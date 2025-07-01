@@ -58,7 +58,7 @@ class BlogController extends AbstractController
             $_SESSION['csrf_token'] = $csrfToken;
             
             $post->setTitle(htmlspecialchars($post->getTitle(), ENT_QUOTES, 'UTF-8'));
-            $post->setContent(htmlspecialchars($post->getContent(), ENT_QUOTES, 'UTF-8'));
+            $post->setContent($post->getContent());
             
             foreach ($comments as $comment)
             {
@@ -89,7 +89,7 @@ class BlogController extends AbstractController
         }
         
         $postId = (int)$_POST['post_id'];
-        $content = $_POST['content'];
+        $content = htmlspecialchars($_POST['content'], ENT_QUOTES, 'UTF-8');
         
         $userManager = new UserManager();
         $user = $userManager->findById($_SESSION['user_id']);

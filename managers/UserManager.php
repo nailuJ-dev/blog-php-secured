@@ -38,8 +38,7 @@ class UserManager extends AbstractManager
             ':role' => $user->getRole(),
             ':created_at' => $user->getCreatedAt()->format('Y-m-d H:i:s')
         ]);
-        $user->setId($this->db->lastInsertId());
-        
+        $user->setId((int)$this->db->lastInsertId());
     }
     
     public function findById(int $id): ?User

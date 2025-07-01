@@ -7,14 +7,15 @@
 
 class Comment
 {
-
-    private ?int $id = null;
-    
-    public function __construct(private string $content, private User $user, private Post $post)
+    public function __construct(private string $content, private User $user, private Post $post, private ?int $id = null)
     {
         $this->setContent($content);
         $this->setUser($user);
         $this->setPost($post);
+        if ($id !== null)
+        {
+            $this->setId($id);
+        }
     }
     
     public function getId(): int 
